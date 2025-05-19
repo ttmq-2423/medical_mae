@@ -55,17 +55,17 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
         if last_activation is not None:
             if last_activation == 'sigmoid':
                 last_activation = torch.nn.Sigmoid()
-        with torch.cuda.amp.autocast():
-            outputs = model(samples)
-            # print(targets.shape)
-            # print(outputs)
-            if last_activation is not None:
-                outputs = last_activation(outputs)
-            # print(outputs.size(), targets.size())
-            # print(outputs)
-            if (args.model == "mobilevit-small" or args.model == "mobilevit-x-small"):
-                outputs = outputs.logits
-            loss = criterion(outputs, targets)
+        
+        outputs = model(samples)
+        # print(targets.shape)
+        # print(outputs)
+        if last_activation is not None:
+            outputs = last_activation(outputs)
+        # print(outputs.size(), targets.size())
+        # print(outputs)
+        if (args.model == "mobilevit-small" or args.model == "mobilevit-x-small"):
+            outputs = outputs.logits
+        loss = criterion(outputs, targets)
            
         loss_value = loss.item()
 
@@ -80,7 +80,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
         if (data_iter_step + 1) % accum_iter == 0:
             optimizer.zero_grad()
 
-        torch.cuda.synchronize()
+     
 
         metric_logger.update(loss=loss_value)
         min_lr = 10.
@@ -122,10 +122,9 @@ def evaluate(data_loader, model, device):
         images = images.to(device, non_blocking=True)
         target = target.to(device, non_blocking=True)
 
-        # compute output
-        with torch.cuda.amp.autocast():
-            output = model(images)
-            loss = criterion(output, target)
+   
+        output = model(images)
+        loss = criterion(output, target)
 
         acc1, acc5 = accuracy(output, target, topk=(1, 5))
 
@@ -194,12 +193,12 @@ def evaluate_chestxray(data_loader, model, device, args):
         target = target.to(device, non_blocking=True)
 
         # compute output
-        with torch.cuda.amp.autocast():
-            output = model(images)
-            if (args.model == "mobilevit-small" or args.model == "mobilevit-x-small"):
-                output = output.logits
-            # print(output.shape)
-            loss = criterion(output, target)
+        
+        output = model(images)
+        if (args.model == "mobilevit-small" or args.model == "mobilevit-x-small"):
+            output = output.logits
+        # print(output.shape)
+        loss = criterion(output, target)
 
 
         if args.dataset == 'covidx':
