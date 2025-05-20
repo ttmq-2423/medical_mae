@@ -38,7 +38,7 @@ import timm.optim.optim_factory as optim_factory
 from collections import OrderedDict
 # from model.convnext_swin import convnext_base_swin4
 # from model.convnext_swin import convnext_swin_base_34
-# from model.conv_vit import ConvNeXtMobileViT
+from model.conv_vit import ConvNeXtMobileViT
 # from model.conv_vit_base import ConvNeXtMobileViTBase
 # from model.optimize_model import OptimizedConvNeXtMobileViT
 
