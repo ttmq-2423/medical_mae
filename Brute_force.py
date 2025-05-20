@@ -37,7 +37,7 @@ from torch.cuda.amp import autocast
 #     "convnext_base_swin4": convnext_base_swin4,
 #     # "convnext_swin_base_34": convnext_swin_base_34
 # }
-# from model.conv_vit import ConvNeXtMobileViT
+from model.conv_vit import ConvNeXtMobileViT
 def get_args_parser():
     parser = argparse.ArgumentParser('Brute Force for image classification', add_help=False)
     parser.add_argument('--batch_size', default=32, type=int)
